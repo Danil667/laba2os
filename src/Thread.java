@@ -8,15 +8,6 @@ public class Thread {
         this.maxTime = maxTime;
     }
 
-    public int getCurrentTime() {
-        return currentTime;
-    }
-
-
-    public int getMaxTime() {
-        return maxTime;
-    }
-
     public String getDescription() {
         return description;
     }

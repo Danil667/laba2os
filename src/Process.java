@@ -1,9 +1,7 @@
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Random;
 
-public class MyProcess implements Comparable<MyProcess> {
+public class Process implements Comparable<Process> {
 
     Random rnd = new Random();
 
@@ -13,7 +11,7 @@ public class MyProcess implements Comparable<MyProcess> {
     private int resultTime = 0;
     public int prior = 1;
 
-    public MyProcess(String description, int maxTime, int prior) {
+    public Process(String description, int maxTime, int prior) {
         this.prior = prior;
         this.description += description;
         this.maxTime = maxTime;
@@ -109,7 +107,7 @@ public class MyProcess implements Comparable<MyProcess> {
 
     }
 
-    public int compareTo(MyProcess other) {
+    public int compareTo(Process other) {
         return other.getPrior() - this.getPrior();
     }
 }
