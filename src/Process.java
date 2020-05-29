@@ -1,12 +1,11 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Process {
     private String id;
     private int prioritet;
     private int operatingTime;
-    private List<Thread> thread;
+    private ArrayList<Thread> thread;
     public Process(String id, int prioritet) {
         this.id = id;
         this.prioritet = prioritet;
@@ -27,7 +26,7 @@ public class Process {
     public int getprioritet() {
         return prioritet;
     }
-    public List<Thread> getlist() {
+    public ArrayList<Thread> getlist() {
         return thread;
     }
     public String getid() {
