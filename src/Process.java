@@ -1,36 +1,113 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class Process {
-    private String id;
-    private int prioritet;
-    private int operatingTime;
-    private List<Thread> thread;
-    public Process(String id, int prioritet) {
-        this.id = id;
-        this.prioritet = prioritet;
-        Random randomNumber = new Random();
-        thread = new ArrayList<>();
-        for (int i = 0; i < randomNumber.nextInt(5) + 1; i++) {
-            thread.add(new Thread("поток " + (i + 1), 8 * i + 1, prioritet, id));
-            this.operatingTime += thread.get(i).getOperatingTime();
+public class Process implements Comparable<Process> {
+
+    Random rnd = new Random();
+
+    private ArrayList<Thread> myThreads;
+    private String description = "Процесс ";
+    private int maxTime;
+    private int resultTime = 0;
+    public int prior = 1;
+
+    public Process(String description, int maxTime, int prior) {
+        this.prior = prior;
+        this.description += description;
+        this.maxTime = maxTime;
+        myThreads = new ArrayList<Thread>();
+        for (int i = 0; i < rnd.nextInt(5) + 1; i++) {
+            myThreads.add(new Thread("" + i, rnd.nextInt(10) + 1));
         }
     }
-    public int getOperatingTime() {
-        return operatingTime;
-    }
-    public void setOperatingTime(int operatingTime) {
-        this.operatingTime = operatingTime;
+
+    public int getCountOfThreads() {
+        return myThreads.size();
     }
 
-    public int getprioritet() {
-        return prioritet;
+    public int getPrior() {
+        return prior;
     }
-    public List<Thread> getlist() {
-        return thread;
+
+    public boolean isEmpty() {
+        return myThreads.size() <= 0;
     }
-    public String getid() {
-        return id;
+
+    public int getResultTime() {
+        return resultTime;
+    }
+
+    public int getMaxTime() {
+        return maxTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isHaveTime() {
+        return getMaxTime() > getResultTime();
+    }
+
+    public void makeProcess(int quant) {
+
+        if (!(quant > 0)) {
+            System.out.println("Выделенный квант времени меньше 1");
+            System.exit(0);
+        }
+        System.out.println();
+        System.out.println(getDescription() + "  Время макс: " + maxTime + " Приор  " + getPrior());
+        int sizeThreads = myThreads.size();
+        int QsizeThreads = myThreads.size();
+        int quant2 = quant;
+        for (int i = 0, iq = 0; i < sizeThreads; i++, iq++) {
+            Thread thread = myThreads.get(i);
+            int thQuant = quant / QsizeThreads;
+            if (iq < quant % QsizeThreads) {
+                thQuant++;
+            }
+            if (!thread.needTime()) {
+                System.out.println(thread.getDescription() + " завершен");
+                myThreads.remove(i);
+                sizeThreads = myThreads.size();
+                i--;
+                break;
+            }
+            while (thQuant > 0) {
+                if (thread.needTime() & isHaveTime() & quant2 > 0 & thQuant > 0) {
+                    thread.makeThread();
+                    thQuant--;
+                    resultTime++;
+                    quant2--;
+                }
+                if (!thread.needTime()) {
+                    System.out.println(thread.getDescription() + " завершен");
+                    myThreads.remove(i);
+                    sizeThreads = myThreads.size();
+                    i--;
+                    break;
+                }
+                if (!isHaveTime()) {
+                    System.out.println("Максимальное время " + getDescription() + " истекло");
+                    return;
+                }
+                if (thQuant <= 0) {
+                    System.out.println("Квант на " + thread.getDescription() + " истек");
+                    break;
+                }
+                if (quant2 <= 0) {
+                    System.out.println("---------------");
+                    return;
+                }
+
+            }
+        }
+
+        System.out.println();
+
+    }
+
+    public int compareTo(Process other) {
+        return other.getPrior() - this.getPrior();
     }
 }
