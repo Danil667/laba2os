@@ -13,6 +13,7 @@ public class Plan {
                 threads.add(t);
             }
         }
+
     }
 
     public void startP(int quant) {
@@ -27,8 +28,6 @@ public class Plan {
                         print(" приостановлен",i);
                         System.out.println();
                         --i;
-
-
 
                         break;
                     }
