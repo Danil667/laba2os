@@ -1,28 +1,33 @@
 public class Thread {
-    private String description = "Поток ";
-    private int maxTime;
-    private int currentTime = 0;
-
-    public Thread(String description, int maxTime) {
-        this.description += description;
-        this.maxTime = maxTime;
+    private String id;
+    private int operatingTime;
+    private int priorPr;
+    private String pid;
+    public Thread(String id, int operatingTime, int priorPr, String p) {
+        this.id = id;
+        this.pid = p;
+        this.operatingTime = operatingTime;
+        this.priorPr=priorPr;
     }
-
-    public String getDescription() {
-        return description;
+    public int getOperatingTime() {
+        return operatingTime;
     }
-
-    public void makeThread() {
-        currentTime++;
-        System.out.println(getInfo());
+    public int getprioritet() {
+        return priorPr;
     }
-
-    public boolean needTime() {
-        return maxTime > currentTime;
+    public String getId() {
+        return id;
     }
-
-    public String getInfo() {
-        return description + " maxTime:"
-                + maxTime + " currentTime:" + currentTime;
+    public String getpid() {
+        return pid;
+    }
+    public boolean isTime() {
+        if (operatingTime <= 0) {
+            return false;
+        }
+        return true;
+    }
+    public void minusTime(){
+        operatingTime--;
     }
 }
